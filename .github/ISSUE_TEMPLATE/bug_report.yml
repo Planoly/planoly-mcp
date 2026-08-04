@@ -1,0 +1,37 @@
+name: Bug report
+description: Something isn't working with the Planoly MCP server
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report! For account or billing issues, use the [Planoly help center](https://support.planoly.com) instead.
+        **Never include access tokens or other credentials in an issue.**
+  - type: input
+    id: client
+    attributes:
+      label: MCP client
+      description: Which client and version (Claude Code, claude.ai, Claude Desktop, Cursor, VS Code, mcp-remote bridge, ...)
+      placeholder: e.g. Claude Code 2.x on macOS
+    validations:
+      required: true
+  - type: input
+    id: tool
+    attributes:
+      label: Tool involved
+      placeholder: e.g. create_post
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you ask for, what did you expect, and what happened instead? Paste the error text if there is one (redact ids you consider private).
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Connect via ...
+        2. Ask the assistant to ...
+        3. See error ...

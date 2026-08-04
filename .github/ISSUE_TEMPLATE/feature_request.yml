@@ -1,0 +1,21 @@
+name: Feature request
+description: Suggest a new tool or capability for the Planoly MCP server
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The workflow you want an assistant to handle, in your own words.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would help?
+      description: A new tool, a new field on an existing tool, a client integration, better docs, ...
+  - type: input
+    id: client
+    attributes:
+      label: MCP client you use
+      placeholder: e.g. claude.ai connectors

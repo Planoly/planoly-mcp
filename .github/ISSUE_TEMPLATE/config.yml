@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Planoly help center
+    url: https://support.planoly.com
+    about: Account, billing, connected-channel, and general product questions.
+  - name: Report a security vulnerability
+    url: https://github.com/Planoly/planoly-mcp/security/advisories/new
+    about: Please report security issues privately, not as public issues.

@@ -1,5 +1,9 @@
 # Planoly MCP Server
 
+[![MCP](https://img.shields.io/badge/MCP-remote%20server-blue)](https://modelcontextprotocol.io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Docs](https://img.shields.io/badge/docs-tool%20reference-green)](./docs/tools.md)
+
 Connect AI assistants to [Planoly](https://www.planoly.com) — plan, create, schedule, and analyze social media content across Instagram, TikTok, YouTube, Pinterest, Facebook, and more, straight from Claude, Cursor, or any MCP client.
 
 This is a **remote MCP server**, hosted by Planoly:
@@ -17,6 +21,8 @@ There is nothing to install or run — you connect your MCP client to the URL ab
 - **Work with your media library** — browse, search, organize into folders, preview media, import from URLs, or upload new assets.
 - **Analyze performance** — Instagram account analytics, per-post performance ranked by the metric you care about, public account research via Business Discovery, and shareable report links.
 - **Discover trends** — browse TikTok's Commercial Music Library trending sounds and attach them to posts.
+
+See [docs/examples.md](./docs/examples.md) for example prompts and workflows.
 
 ## Getting started
 
@@ -81,7 +87,11 @@ The server uses the standard MCP authorization flow — OAuth 2.1 authorization 
 
 Tokens are scoped to your Planoly user. Tools that operate on a workspace take a `workspaceId` and enforce workspace membership on every call — start with `list_workspaces` to see what you can access.
 
+Full details in [docs/authentication.md](./docs/authentication.md).
+
 ## Tools
+
+Summarized below; parameter-level detail lives in **[docs/tools.md](./docs/tools.md)**.
 
 ### Workspaces & channels
 
@@ -138,15 +148,27 @@ The model never carries media bytes through inference. Media reaches a post by `
 2. **From a URL** — `create_asset_from_url` has the server fetch it (allowlisted hosts only).
 3. **Local bytes** — `request_asset_upload` → HTTP `PUT` the bytes → `confirm_asset_upload`, for clients with a code-execution sandbox.
 
+Details and constraints in [docs/media.md](./docs/media.md).
+
 ## Validation & plan requirements
 
 Posts are validated against each platform's rules (caption length, media count/type, aspect ratio, video duration) the same way the Planoly app validates them — errors come back at tool-call time with the exact violation, not at publish time.
 
 Some tools map to Planoly premium features and require a paid workspace: TikTok trending sounds, the media library tools, the analytics tools, and product tagging. When a tool requires an upgrade, the error includes a link to the billing page.
 
-## Support
+## Documentation
 
-- Planoly help center: https://support.planoly.com
-- Product: https://www.planoly.com
+- [Tool reference](./docs/tools.md) — every tool, its parameters, and behavior
+- [Authentication](./docs/authentication.md) — the OAuth flow, token model, resetting auth state
+- [Media handling](./docs/media.md) — how assets get in and out
+- [Example prompts](./docs/examples.md) — workflows to try
+- [Troubleshooting](./docs/troubleshooting.md) — common errors and fixes
+- [Changelog](./CHANGELOG.md)
 
-The server implementation is not open source; this repository tracks the public documentation and [MCP registry](https://registry.modelcontextprotocol.io) metadata for the hosted service. Issues and feedback about the MCP server are welcome on this repository's issue tracker.
+## Support & security
+
+- Product and account help: [Planoly help center](https://support.planoly.com) · see [SUPPORT.md](./SUPPORT.md)
+- MCP server bugs and feature requests: [issues](https://github.com/Planoly/planoly-mcp/issues)
+- Vulnerabilities: report privately per [SECURITY.md](./SECURITY.md)
+
+The server implementation is not open source; this repository tracks the public documentation and [MCP registry](https://registry.modelcontextprotocol.io) metadata ([server.json](./server.json)) for the hosted service.
