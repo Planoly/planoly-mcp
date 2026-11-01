@@ -1,8 +1,8 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "com.planoly/mcp",
-  "description": "Plan, create, schedule, and analyze social media content in Planoly across Instagram, TikTok, YouTube, Pinterest, and Facebook.",
-  "version": "1.0.0",
+  "description": "Plan, schedule, and analyze social content in Planoly, and manage your Instagram inbox.",
+  "version": "1.1.0",
   "websiteUrl": "https://www.planoly.com",
   "repository": {
     "url": "https://github.com/Planoly/planoly-mcp",
