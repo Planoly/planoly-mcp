@@ -24,7 +24,22 @@ The Planoly account you signed in with during the OAuth flow. Tokens are user-sc
 The signed-in user isn't a member of that `workspaceId`. Call `list_workspaces` and use an id from the result.
 
 **`SUBSCRIPTION_REQUIRED`.**
-The tool maps to a Planoly premium feature (media library, analytics, TikTok trending sounds, product tagging). The error includes a billing link to upgrade the workspace.
+The tool maps to a Planoly premium feature (media library, analytics, TikTok trending sounds, product tagging, inbox). The error includes a link to upgrade. For the inbox, `list_workspaces` shows which workspaces include it (`inboxIncluded`).
+
+**`POST_GROUP_CREATION_LIMIT_REACHED`.**
+The workspace is on the free plan and has used its monthly post allowance. The error says how many are used and remaining, when the allowance resets, and links to upgrade. `get_account_billing` with the `workspaceId` shows the allowance.
+
+**`RATE_LIMIT_REACHED`.**
+Too many calls in a short time. Wait a moment and retry.
+
+**`PROVIDER_ERROR` from `send_inbox_reply`.**
+Instagram refused the reply. The message gives Instagram's reason and how many messages went out; the reply waits in the Planoly inbox to retry or discard. Read the conversation with `get_inbox_conversation` before sending again.
+
+**A post saved but `willAutoPublish` is `false`.**
+The channel can't auto-publish (it's reminder-only, or its connection needs fixing), so the user will get a reminder to post it manually. When reconnecting would fix it, the result includes a `connectUrl`. `list_channels` shows each channel's `canAutoPublish` and connection state.
+
+**Why did my post fail?**
+`list_post_groups` with `status: failed` returns each failed post's `latestError`.
 
 **Validation error when scheduling.**
 Auto-publish posts are checked against the target platform's content rules (media count/type, aspect ratio, video duration, caption length, …) at schedule time — the error lists every violation so it can be fixed and retried. Drafts and reminder-only posts are not content-gated.
@@ -33,13 +48,25 @@ Auto-publish posts are checked against the target platform's content rules (medi
 Caption length is enforced up front for every status, per platform, because an agent has no on-screen character counter. The error states the exact overage (e.g. "caption is 600 characters, 100 over the 500 limit").
 
 **`create_asset_from_url` rejects my URL.**
-The source host isn't on the import allowlist (Instagram/Facebook CDNs, Planoly, supported AI-generation hosts, design-tool exports like Canva). Download the file and use the signed-upload flow instead, or add the media through the Planoly app.
+Only HTTPS links to Instagram/Facebook media, Planoly media or its stock library, Canva exports, or Higgsfield/DALL·E output are accepted. Download the file and use the signed-upload flow instead, or add the media through the Planoly app.
 
 **`USER_NOT_FOUND` from `get_instagram_account_posts`.**
 The target handle is private, a personal (non-business/creator) account, or doesn't exist. Business Discovery only works for public Business/Creator accounts.
 
+**`get_instagram_account_posts` returns a post with `mediaUrl: null`.**
+Instagram withholds the file for some posts (e.g. reels with licensed music). That's an Instagram limit; the post's other details still come back.
+
 **Instagram analytics tools return an error.**
-They require a connected Instagram **Business** account in the workspace. Personal/creator-basic connections don't expose insights.
+They need a connected Instagram account that can serve insights: a Facebook-linked business account, or an Instagram Login account that granted the insights permission.
+
+**TikTok, LinkedIn, or Pinterest analytics return an error.**
+They need a channel for that network that auto-publishes — reminder-only channels have no analytics access. Personal LinkedIn profile analytics aren't available to every profile yet.
+
+**An inbox DM won't send.**
+Instagram only lets a DM through within its messaging window: 24 hours after the person's last message (7 days when the human-agent tag applies). `canReplyUntil` on the conversation shows when it closes; `null` means it's closed. DMs and private replies also need the account's messaging permission — `list_channels` flags accounts where Instagram is refusing messages and what to fix.
+
+**An automation is on but sends nothing.**
+Check the automation's `warnings`: an Instagram account that didn't grant a needed permission sends nothing until it's reconnected at the given `fixUrl`.
 
 ## Still stuck?
 

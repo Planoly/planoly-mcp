@@ -13,14 +13,14 @@ Works from **any** MCP client; the bytes entered Planoly through the app, not th
 
 ## 2. Media at a URL
 
-`create_asset_from_url` has the **server** fetch the file — only a URL crosses the wire, so this also works from any client. The source host must be on the supported allowlist:
+`create_asset_from_url` has the **server** fetch the file — only a URL crosses the wire, so this also works from any client. Only HTTPS links from these sources are accepted:
 
-- Instagram / Facebook CDNs (re-importing social media)
-- Planoly's own hosts
-- Supported AI-generation output hosts
-- Design-tool export hosts (e.g. Canva)
+- Instagram / Facebook media (re-importing social media)
+- Planoly's own media and its built-in stock library
+- Canva design exports
+- AI output from Higgsfield or OpenAI's DALL·E
 
-Arbitrary URLs are rejected. If a generator only returns base64, steer it to a URL-returning mode or upload the bytes via option 3.
+Other links — including ones that redirect elsewhere — are rejected. For files from other sites (other stock sites, Google Drive, Dropbox, a personal site), upload the bytes via option 3 or add them in the Planoly app. Images come back ready immediately; videos come back processing while they transcode.
 
 ## 3. Local bytes via signed upload
 
